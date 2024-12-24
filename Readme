@@ -15,3 +15,9 @@ check list for GET /test-orders
 |-|---------|----------|
 |1|Positive Authentication a user by providing a valid username and password| username and password : string
 |2|Negative Authentication a user by providing a valid username and password but wrong method| method: delete
+
+check list for calculating the risk score
+|#| Scenario | Test Data |
+|-|----------|-----------|
+|1| Positive outcome with valid request data| all data are valid
+|2| Negative outcome with invalid request data| age < 16
