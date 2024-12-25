@@ -1,0 +1,23 @@
+check list for PUT Orders
+|#| Scenario | Test data|
+|-|----------|----------|
+|1|Positive update with valid id and api key| valid 16n api key and id from 1 to 10|
+|2|Negative update with wrong id and valid api key| id > 10|
+
+check list for DELETE Orders
+|#|Scenario| Test data|
+|-|--------|----------|
+|1|Positive Delete by providing a valid order ID and api key| valid 16n api key and id from 1 to 10|
+|2|Negative delete by providing a wrong order ID and valid api key| id = 0
+
+check list for GET /test-orders
+|#|Scenario | Test data|
+|-|---------|----------|
+|1|Positive Authentication a user by providing a valid username and password| username and password : string
+|2|Negative Authentication a user by providing a valid username and password but wrong method| method: delete
+
+check list for calculating the risk score
+|#| Scenario | Test Data |
+|-|----------|-----------|
+|1| Positive outcome with valid request data| all data are valid
+|2| Negative outcome with invalid request data| age < 16
