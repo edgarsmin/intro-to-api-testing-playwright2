@@ -1,4 +1,4 @@
-import { APIRequestContext } from 'playwright'
+import { APIRequestContext, APIResponse } from 'playwright'
 import { LoginDto } from '../dto/login-dto'
 import { StatusCodes } from 'http-status-codes'
 import { expect } from '@playwright/test'
@@ -58,5 +58,48 @@ export class ApiClient {
     console.log(responseBody)
 
     return responseBody.id
+  }
+  async createOrderAndGetData(): Promise<APIResponse> {
+    const response = await this.request.post(`${serviceURL}${orderPath}`, {
+      data: OrderDto.createOrderWithRandomData(),
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Response status: ', response.status())
+    expect(response.status()).toBe(StatusCodes.OK)
+    const orderData = await response.json()
+    const orderId = orderData.id
+    const getOrderById = await this.request.get(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Response status: ', getOrderById.status())
+    expect(getOrderById.status()).toBe(StatusCodes.OK)
+    const responseOrderData = await getOrderById.json()
+    console.log('order data:', responseOrderData)
+    return responseOrderData
+  }
+
+  async createOrderAndDelete(): Promise<APIResponse> {
+    const response = await this.request.post(`${serviceURL}${orderPath}`, {
+      data: OrderDto.createOrderWithRandomData(),
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    console.log('Response status: ', response.status())
+    expect(response.status()).toBe(StatusCodes.OK)
+    const orderData = await response.json()
+    console.log('New order:', orderData)
+    const orderId = orderData.id
+    const deleteOrderById = await this.request.delete(`${serviceURL}${orderPath}/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${this.jwt}`,
+      },
+    })
+    expect(deleteOrderById.status()).toBe(StatusCodes.OK)
+    return response
   }
 }
